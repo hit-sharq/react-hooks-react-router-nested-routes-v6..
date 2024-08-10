@@ -1,12 +1,25 @@
+import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import NavBar from "./components/NavBar";
 
 function App() {
-  return (
-    <>
-      <header>
-        
-      </header>
-    </>
-  );
-};
+    const [users, setUsers] = useState([]);
 
-export default App;
+    useEffect(() => {
+        fetch("http://localhost:4000/users")
+        .then(r => r.json())
+        .then(data => setUsers(data))
+        .catch(error => console.error(error));
+    }, []);
+
+    return (
+        <>
+            <header>
+                <NavBar />
+            </header>
+            <Outlet context={users} />
+        </>
+    );
+}
+
+export default App; // Add this line to export the App function
